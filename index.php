@@ -10,17 +10,62 @@
 <div class="container">
     <h2>Login</h2>
 
-    <form id="registrationForm">
+
+<?php
+// print_r($_POST);
+
+$messages = [];
+
+require_once "libs/db.php";
+
+$messages = [];
+
+if (isset($_POST['email'])) {
+    $email     = $_POST['email'];
+    $password = $_POST['password'];
+
+
+    $stmt = $pdo->prepare("
+        SELECT id, role, full_name, email, password
+        FROM users
+        WHERE email = ?
+        LIMIT 1
+    ");
+
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+
+    if (!$user || $password !== $user['password']) {
+        // exit("Invalid email or password");
+        $messages[] = "Invalid email or password";
+    } else {
+        header("Location: dashboard.php");
+    }
+
+}
+
+foreach($messages as $msg) {
+    echo "<p class=\"notice\">{$msg}</p>";
+}
+
+?>
+
+
+
+
+
+
+    <form id="registrationForm" method="post">
 
 
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" id="email" required>
+            <input name="email" type="email" id="email" required>
         </div>
 
         <div class="form-group">
             <label>Password</label>
-            <input type="password" id="password" required>
+            <input name="password" type="password" id="password" required>
         </div>
 
         <div class="btn-wrap">
