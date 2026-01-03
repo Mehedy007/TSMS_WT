@@ -1,0 +1,35 @@
+CREATE TABLE users (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    role ENUM('student','teacher') NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE students (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    student_id VARCHAR(50) NOT NULL UNIQUE,
+    class VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) 
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE teachers (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    employee_id VARCHAR(50) NOT NULL UNIQUE,
+    subject VARCHAR(100) NOT NULL,
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+
+
+
